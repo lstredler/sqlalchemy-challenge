@@ -2,7 +2,6 @@
 import numpy as np
 import datetime as dt
 import pandas as pd
-import numpy as np
 
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
@@ -41,42 +40,23 @@ app = Flask(__name__)
 #################################################
 
 @app.route("/")
-def welcome():
+def home():
     """List all available api routes."""
     return (
         f"Available Routes:<br/>"
         f"/api/v1.0/precipitation<br/>"
-        f"- Rain total by date and station
+        f"- Rain total by date and station"
         f"/api/v1.0/stations<br/>"
-        f"- List of station names 
+        f"- List of station names" 
         f"/api/v1.0/tobs<br/>"
-        f"- List of temperature observations
+        f"- List of temperature observations"
         f"/api/v1.0/start<br/>"
-        f"- The max, min and average temperature is given at start date 
+        f"- The max, min and average temperature is given at start date" 
         f"/api/v1.0/start/end<br/>"
-        f"- The max, min and average temperature is given at start/end date 
+        f"- The max, min and average temperature is given at start/end date" 
 
     )
 ##############################################
-
-
-@app.route("/api/v1.0/precipitation")
-def stations():
-    results = session.query(Measurement.date, Measurement.prcp).filter(Measurement.date >last_12_months).\
-    order_by(Measurement.date).all()
-
-
-##############################################
-
-@app.route("/api/v1.0/stations")
-def stations():
-
-    """Return a list of stations"""
-    # Query measurements 
-    station_query = session.query(Stations.name, Station.station)
-    stations=pd.read_sql(stations_query.statement, stations_query.session.bind)
-    return jsonify(stations.to_dict())
-
-##############################################
-@app.route("/api/v1.0/tobs")
-def tobs():
+#debugger
+if __name__=="__main__":
+    app.run(debug=True)
