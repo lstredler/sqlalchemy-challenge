@@ -2,6 +2,7 @@
 import numpy as np
 import datetime as dt
 import pandas as pd
+import numpy as np
 
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
@@ -9,7 +10,6 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
 
 from flask import Flask, jsonify
-
 
 #################################################
 # Database Setup
@@ -24,8 +24,8 @@ Base = automap_base()
 Base.prepare(engine, reflect=True)
 
 # Save reference to the table
-Measurement = Base.classes.measurement
-Station=Base.classes.station
+Measurement= Base.classes.measurement 
+Station = Base.classes.station
 
 #create and bind the session between the python app and database 
 session=Session(engine)
@@ -54,9 +54,18 @@ def home():
         f"- The max, min and average temperature is given at start date" 
         f"/api/v1.0/start/end<br/>"
         f"- The max, min and average temperature is given at start/end date" 
-
     )
+
+@app.route("/")
+def precipitation():
+    results=session.query(Measurement.name).all()
+
+    session.close()
+
+    all_names=list(np.ravel(results))
+
+    return jsonify(all(names))
 ##############################################
 #debugger
-if __name__=="__main__":
+if __name__ == "__main__":
     app.run(debug=True)
