@@ -58,14 +58,25 @@ def home():
 
 @app.route("/")
 def precipitation():
-    results=session.query(Measurement.name).all()
-
+    results=session.query(Measurement.date).order_by(Measurement.date.desc()).first().date
     session.close()
 
     all_names=list(np.ravel(results))
 
-    return jsonify(all(names))
+    return jsonify(all(results))
 ##############################################
+
+#@app.route("/")
+#def stations():
+    #results=session.query(Station.station).count()
+
+#@app.route("/")
+#def start():
+    #results = session.query
+
+#@app.route("/")
+#def start():
+    #results = session.query
 #debugger
 if __name__ == "__main__":
     app.run(debug=True)
