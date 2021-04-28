@@ -25,14 +25,14 @@ Base = automap_base()
 Base.prepare(engine, reflect=True)
 
 # Save reference to the table
-Measurements = Base.classes.measurements
+Measurement = Base.classes.measurement
 Station=Base.classes.station
 
 #create and bind the session between the python app and database 
 session=Session(engine)
 
 #################################################
-# Flask Setup
+# Flask Setup - list available routes 
 #################################################
 app = Flask(__name__)
 
@@ -46,10 +46,15 @@ def welcome():
     return (
         f"Available Routes:<br/>"
         f"/api/v1.0/precipitation<br/>"
+        f"- Rain total by date and station
         f"/api/v1.0/stations<br/>"
+        f"- List of station names 
         f"/api/v1.0/tobs<br/>"
+        f"- List of temperature observations
         f"/api/v1.0/start<br/>"
+        f"- The max, min and average temperature is given at start date 
         f"/api/v1.0/start/end<br/>"
+        f"- The max, min and average temperature is given at start/end date 
 
     )
 ##############################################
@@ -57,6 +62,8 @@ def welcome():
 
 @app.route("/api/v1.0/precipitation")
 def stations():
+    results = session.query(Measurement.date, Measurement.prcp).filter(Measurement.date >last_12_months).\
+    order_by(Measurement.date).all()
 
 
 ##############################################
